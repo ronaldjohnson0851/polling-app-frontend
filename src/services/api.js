@@ -49,3 +49,5 @@ export function castVote(voteData) {
         body: JSON.stringify(voteData)
     });
 }
+
+//screen of creating a new poll 
