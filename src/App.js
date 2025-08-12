@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Layout } from 'antd';
 import PollList from './components/poll/PollList';
+import NewPoll from './components/poll/NewPoll';
 
 const { Content } = Layout;
 
@@ -15,6 +16,7 @@ class App extends Component {
             <div className="container">
               <Routes>
                 <Route path="/" element={<PollList />} />
+                <Route path="/poll/new" element={<NewPoll />} />
               </Routes>
             </div>
           </Content>
