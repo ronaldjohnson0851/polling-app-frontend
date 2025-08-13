@@ -149,15 +149,22 @@ class PollList extends Component {
                                             </Radio.Group>
                                             
                                             <div style={{ marginTop: '16px', textAlign: 'center' }}>
-                                                <Button 
-                                                    type="primary"
-                                                    size="large"
-                                                    onClick={() => this.handleVote(poll.id)}
-                                                    disabled={!selectedOptions[poll.id]}
-                                                    style={{ minWidth: '120px' }}
-                                                >
-                                                    🗳️ Cast Vote
-                                                </Button>
+                                               <Space>
+                                                    <Button 
+                                                        type="primary"
+                                                        onClick={() => this.handleVote(poll.id)}
+                                                        disabled={!selectedOptions[poll.id]}
+                                                        style={{ minWidth: '120px' }}
+                                                    >
+                                                        🗳️ Cast Vote
+                                                    </Button>
+                                                    <Button 
+                                                        type="default"
+                                                        onClick={() => this.props.navigate(`/poll/${poll.id}`)}
+                                                    >
+                                                        📋 View Details
+                                                    </Button>
+                                                </Space>
                                             </div>
                                         </div>
                                     ) : (

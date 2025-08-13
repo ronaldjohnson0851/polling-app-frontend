@@ -50,4 +50,18 @@ export function castVote(voteData) {
     });
 }
 
+export function getPoll(pollId) {
+    return request({
+        url: API_BASE_URL + "/polls/" + pollId,
+        method: 'GET'
+    });
+}
+
+export function getPollResults(pollId) {
+    return request({
+        url: API_BASE_URL + "/computeresult?pollId=/" + pollId,
+        method: 'GET'
+    });
+}
+
 //screen of creating a new poll 

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Layout } from 'antd';
 import PollList from './components/poll/PollList';
 import NewPoll from './components/poll/NewPoll';
+import PollDetail from './components/poll/PollDetail';
 
 const { Content } = Layout;
 
@@ -17,6 +18,7 @@ class App extends Component {
               <Routes>
                 <Route path="/" element={<PollList />} />
                 <Route path="/poll/new" element={<NewPoll />} />
+                <Route path="/poll/:pollId" element={<PollDetail />} />
               </Routes>
             </div>
           </Content>
