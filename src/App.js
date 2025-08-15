@@ -5,6 +5,7 @@ import { Layout } from 'antd';
 import PollList from './components/poll/PollList';
 import NewPoll from './components/poll/NewPoll';
 import PollDetail from './components/poll/PollDetail';
+import PollResult from './components/poll/PollResult';
 
 const { Content } = Layout;
 
@@ -19,6 +20,7 @@ class App extends Component {
                 <Route path="/" element={<PollList />} />
                 <Route path="/poll/new" element={<NewPoll />} />
                 <Route path="/poll/:pollId" element={<PollDetail />} />
+                <Route path="/poll/:pollId/results" element={<PollResult />} />
               </Routes>
             </div>
           </Content>

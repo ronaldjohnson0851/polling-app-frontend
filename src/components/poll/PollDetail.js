@@ -231,17 +231,27 @@ class PollDetail extends Component {
                                 </Space>
                             </Radio.Group>
                             
-                            <div style={{ marginTop: '32px', textAlign: 'center' }}>
-                                <Button 
-                                    type="primary"
-                                    size="large"
-                                    onClick={this.handleVote}
-                                    disabled={!selectedOption}
-                                    loading={isVoting}
-                                    style={{ minWidth: '150px', height: '48px' }}
-                                >
-                                    🗳️ Cast Your Vote
-                                </Button>
+                          <div style={{ marginTop: '32px', textAlign: 'center' }}>
+                                <Space size="large">
+                                    <Button 
+                                        type="primary"
+                                        size="large"
+                                        onClick={this.handleVote}
+                                        disabled={!selectedOption}
+                                        loading={isVoting}
+                                        style={{ minWidth: '150px', height: '48px' }}
+                                    >
+                                        🗳️ Cast Your Vote
+                                    </Button>
+                                    <Button 
+                                        type="default"
+                                        size="large"
+                                        onClick={() => navigate(`/poll/${poll.id}/results`)}
+                                        style={{ minWidth: '150px', height: '48px' }}
+                                    >
+                                        📊 View Results
+                                    </Button>
+                                </Space>
                             </div>
                         </div>
                     ) : (
