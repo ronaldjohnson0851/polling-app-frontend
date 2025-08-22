@@ -2,9 +2,16 @@ import React, { Component } from "react";
 import { createPoll } from "../../services/api";
 import { Form, Input, Button, Space, message, Typography, Card } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 const { TextArea } = Input;
+
+// Wrapper component to use navigation hook
+function NewPollWithNavigation() {
+    const navigate = useNavigate();
+    return <NewPoll navigate={navigate} />;
+}
 
 class NewPoll extends Component {
     constructor(props) {
@@ -58,9 +65,8 @@ class NewPoll extends Component {
             message.error('A poll must have at least 2 valid options.');
             return;
         }
-    
 
-    const pollData = {
+        const pollData = {
             question: question.trim(),
             options: validOptions.map(value => ({ value: value.trim() }))
         };
@@ -69,12 +75,17 @@ class NewPoll extends Component {
 
         createPoll(pollData)
             .then(response => {
-                message.success('Poll created successfully!');
+                message.success('Poll created successfully! Redirecting to home page...');
                 this.setState({
                     question: '',
-                    options: [ '', ''],
+                    options: ['', ''],
                     isSubmitting: false
                 });
+
+                // Navigate back to home page after successful creation
+                setTimeout(() => {
+                    this.props.navigate('/');
+                }, 1500); // Small delay to show success message
 
                 if (this.props.onPollCreated) {
                     this.props.onPollCreated();
@@ -85,25 +96,20 @@ class NewPoll extends Component {
                 message.error('Failed to create poll. Please try again.');
                 this.setState({ isSubmitting: false });
             });
-
     }
 
-   render() {
+    render() {
         const { question, options, isSubmitting } = this.state;
 
         return (
-            <div style={{ 
+            <div className="slide-up" style={{ 
                 padding: '24px', 
                 maxWidth: '800px', 
                 margin: '0 auto',
-                backgroundColor: '#f0f2f5',
                 minHeight: '100vh'
             }}>
-                <Card style={{ 
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    border: 'none'
-                }}>
-                    <Title level={2} style={{ textAlign: 'center', color: '#1890ff', marginBottom: '24px' }}>
+                <Card>
+                    <Title level={2} style={{ textAlign: 'center', marginBottom: '24px' }}>
                         📝 Create New Poll
                     </Title>
 
@@ -170,15 +176,16 @@ class NewPoll extends Component {
                                     size="large"
                                     onClick={this.handleSubmit}
                                     loading={isSubmitting}
-                                    style={{ minWidth: '120px' }}
+                                    style={{ minWidth: '140px', height: '48px' }}
                                 >
                                     🗳️ Create Poll
                                 </Button>
                                 <Button
                                     size="large"
-                                    onClick={() => window.history.back()}
+                                    onClick={() => this.props.navigate('/')}
+                                    style={{ minWidth: '120px', height: '48px' }}
                                 >
-                                    Cancel
+                                    🏠 Back to Home
                                 </Button>
                             </Space>
                         </Form.Item>
@@ -188,16 +195,17 @@ class NewPoll extends Component {
                     <div style={{ 
                         marginTop: '24px', 
                         padding: '16px', 
-                        backgroundColor: '#f6ffed', 
-                        border: '1px solid #b7eb8f',
-                        borderRadius: '6px'
+                        background: 'rgba(102, 126, 234, 0.1)',
+                        border: '1px solid rgba(102, 126, 234, 0.2)',
+                        borderRadius: '16px'
                     }}>
-                        <h4 style={{ margin: '0 0 8px 0', color: '#52c41a' }}>💡 Tips:</h4>
+                        <h4 style={{ margin: '0 0 8px 0', color: '#667eea' }}>💡 Tips:</h4>
                         <ul style={{ margin: 0, paddingLeft: '20px', color: '#666' }}>
                             <li>Keep your question clear and concise</li>
                             <li>Provide at least 2 options, maximum 6</li>
                             <li>Each option should be unique and meaningful</li>
                             <li>Your poll will be immediately available for voting</li>
+                            <li>You'll be redirected to the home page after creation</li>
                         </ul>
                     </div>
                 </Card>
@@ -206,5 +214,4 @@ class NewPoll extends Component {
     }
 }
 
-export default NewPoll;
-
+export default NewPollWithNavigation;

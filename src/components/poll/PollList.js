@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { getAllPolls, castVote } from '../../services/api';
 import { Card, List, Button, Radio, message, Space } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function PollListWithNavigation(){
     const navigate = useNavigate();
-    return <PollList navigate={navigate} />
+    const location = useLocation();
+    return <PollList navigate={navigate} location={location} />
 }
 
 class PollList extends Component {
@@ -18,8 +19,50 @@ class PollList extends Component {
         };
     }
 
+    handleOptionChange = (pollId, optionId) => {
+        this.setState(prevState => ({
+            selectedOptions: {
+                ...prevState.selectedOptions,
+                [pollId]: optionId
+            }
+        }));
+    }
+
     componentDidMount() {
         this.loadPolls();
+        
+        // Listen for custom events (we'll trigger this from NewPoll)
+        window.addEventListener('pollCreated', this.handlePollCreated);
+        
+        // Auto-refresh when returning to this page
+        window.addEventListener('focus', this.loadPolls);
+        document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('pollCreated', this.handlePollCreated);
+        window.removeEventListener('focus', this.loadPolls);
+        document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    }
+
+    componentDidUpdate(prevProps) {
+        // Check if we navigated back to home page
+        if (prevProps.location?.key !== this.props.location?.key && this.props.location?.pathname === '/') {
+            console.log('Navigation detected, refreshing polls...');
+            this.loadPolls();
+        }
+    }
+
+    handlePollCreated = () => {
+        console.log('Poll created event received, refreshing...');
+        this.loadPolls();
+    }
+
+    handleVisibilityChange = () => {
+        if (!document.hidden) {
+            console.log('Page visible, refreshing polls...');
+            this.loadPolls();
+        }
     }
 
     loadPolls = () => {
@@ -66,10 +109,9 @@ class PollList extends Component {
         })
         .catch(error => {
             console.error('Error casting vote:', error);
-            message.error('Failed tp cast vpte. Please try again!');
+            message.error('Failed to cast vote. Please try again!');
         });
     }
-
 
     render() {
         const { polls, isLoading, selectedOptions } = this.state;

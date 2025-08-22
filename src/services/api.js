@@ -29,7 +29,7 @@ export function getAllPolls(page, size) {
     size = size || 30;
 
     return request({
-        url: API_BASE_URL + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/polls?page=" + page + "&size=" + size + "&_t=" + Date.now(),
         method: 'GET'
     });
 }
